@@ -1,4 +1,6 @@
 # embedded_project-1/2 
+device driver or linux kernel etc
+
 for ubuntu 16.04 (kernel 2.6.x or 3 or 4) 
 it's a simple device driver project etc... 
 
