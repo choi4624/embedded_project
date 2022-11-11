@@ -100,25 +100,52 @@ long chr_ioctl(struct file *filep, unsigned int cmd, unsigned long arg)
 {
     int size;
     struct kfifo temp;
+    char letter;
 
     switch (cmd)
     {
-    case 0:
+        
+    case CH_WRITE_BUFFER_SIZE:
         printk("[CHR_DEV] cmd value is %d\n", cmd);
+        copy_from_user(&size,(void __user *)arg,sizeof(size));
+        kfifo_alloc(&temp, buffer_size, GFP_KERNEL);
+
+        while (!kfifo_is_empty(&fifo_buffer)){  
+                kfifo_out(&fifo_buffer, &letter, sizeof(letter));
+                kfifo_in(&temp,&letter,sizeof(letter));
+            }
+
+        
+        buffer_size = size;
+        kfifo_free(&fifo_buffer);
+        kfifo_alloc(&fifo_buffer, buffer_size, GFP_KERNEL);
+        while (!kfifo_is_empty(&temp))
+            {
+                if(kfifo_is_full(&fifo_buffer)){ 
+                    kfifo_out(&fifo_buffer, &letter, sizeof(letter));
+                }
+                kfifo_out(&temp, &letter, sizeof(letter));
+                kfifo_in(&fifo_buffer,&letter,sizeof(letter));
+            }
+        kfifo_free(&temp);
+
+        size = kfifo_size(&fifo_buffer);
+        printk(KERN_INFO "kfifo size: %d\n", kfifo_size(&fifo));
+        printk(KERN_INFO "kfifo len: %d\n", kfifo_len(&fifo));
+        printk(KERN_INFO "kfifo avail: %d\n", kfifo_avail(&fifo));
+        copy_to_user((void __user *)arg, &size, sizeof(size))
         break;
-    case 1:
+
+    case CH_READ_BUFFER_SIZE:
+        read_buffer_size = size;
         printk("[CHR_DEV] cmd value is %d\n", cmd);
+        copy_from_user(&size,(void __user *)arg,sizeof(size))
+        printk(KERN_INFO "read buffer size changed : %d \n", read_buffer_size);
         break;
-    case 2:
-        printk("[CHR_DEV] cmd value is %d\n", cmd);
-        break;
-    case 3:
-        printk("[CHR_DEV] cmd value is %d\n", cmd);
-        break;
-    case 4:
-        printk("[CHR_DEV] cmd value is %d\n", cmd);
-        break;
+
     default:
+        read_buffer_size
+        printk("[CHR_DEV] cmd value is %d default route\n", cmd);
         break;
     }
     return 0;
