@@ -17,8 +17,8 @@ module_param(read_buffer_size, int, 0000);
 
 struct kfifo fifo_buffer; // 내부 버퍼
 
-#define CH_WRITE_BUFFER_SIZE _IOW(DEV_MAJOR_NUMBER,0,int)
-#define CH_READ_BUFFER_SIZE _IOW(DEV_MAJOR_NUMBER,1,int)
+#define CH_WRITE_BUFFER_SIZE _IOW(DEV_MAJOR_NUMBER,1,int)
+#define CH_READ_BUFFER_SIZE _IOW(DEV_MAJOR_NUMBER,2,int)
 
 
 int device_open(struct inode *inode, struct file *filep)
