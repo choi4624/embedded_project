@@ -1,4 +1,8 @@
 {
     "cmake.sourceDirectory": "${workspaceFolder}/vcpkg/docs/examples/vcpkg_android_example_cmake",
-    "C_Cpp.errorSquiggles": "Disabled"
+    "C_Cpp.errorSquiggles": "Disabled",
+    "files.associations": {
+        "stat.h": "c",
+        "unistd.h": "c"
+    }
 }
