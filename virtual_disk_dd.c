@@ -1,8 +1,10 @@
-#include <init.h>
+#include <linux/init.h>
 #include <linux/module.h>
 #include <linux/kernel.h>
 #include <linux/list.h>
 #include <linux/kfifo.h>
+#include <linux/slab.h> 
+#include <linux/uaccess.h>
 
 #define TEST_DEV_NAME "VirtualDisk"
 #define TEST_DEV_MAJOR 246
